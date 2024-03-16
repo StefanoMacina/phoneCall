@@ -15,7 +15,17 @@ public class Main {
 
         boolean flag = true;
         while(flag){
-            showOptions();
+            showOptions(
+                    """
+                --- MAIN MENU ---
+                Select one option:
+                    1 - add all your account details
+                    2 - start program
+                    3 - show your details
+                    4 - go to user menu
+                    Q - to quit
+                """
+            );
             String selected = scanner.nextLine().trim();
             switch (selected){
                 case "1" -> {
@@ -29,6 +39,9 @@ public class Main {
                 case "3" -> {
                     showUserDetails();
                 }
+                case "4" -> {
+                    menuUserDetails();
+                }
                 case "q","Q" -> {
                     System.out.println("QUIT");
                     flag = false;
@@ -38,15 +51,8 @@ public class Main {
         }
     }
 
-    public static void showOptions(){
-        String options = """
-                Select one option:
-                    1 - add your account details
-                    2 - start program
-                    3 - show your details
-                    Q - to quit
-                """;
-        System.out.println(options);
+    public static void showOptions(String menu){
+        System.out.println(menu);
     }
 
     public static void getUserInputs(){
@@ -56,7 +62,7 @@ public class Main {
         System.out.println("twilio auth token :");
         String AUTH_TOKEN = scanner.nextLine().trim();
 
-        System.out.println("twilio phone number :");
+        System.out.println("enter PHONE in valid format: [+ prefix][number] :");
         String from = scanner.nextLine().trim();
 
         System.out.println("TWILIO DETAILS ADDEDD SUCCESSFULLY");
@@ -66,10 +72,77 @@ public class Main {
         user.setAUTH_TOKEN(AUTH_TOKEN);
     }
 
+    public static void menuUserDetails(){
+        boolean flag = true;
+        while(flag){
+            showOptions(
+                    """
+                    --- USER DETAILS MENU ---
+                    1 - add your twilio SSID
+                    2 - add your twilio TOKEN
+                    3 - add your twilio phone number
+                    4 - show your details
+                    B - go back to main menu
+                    """
+            );
+            String selected = scanner.nextLine().trim();
+            switch (selected){
+                case "1" -> {
+                    showOptions(String.format("""
+                            --- UPDATE USER SSID ---
+                            OLD VALUE : %s
+                            
+                            enter SSID
+                            """,user.getACCOUNT_SID()));
+                    user.setACCOUNT_SID(scanner.nextLine().trim());
+                }
+                case "2" -> {
+                    showOptions(String.format("""
+                            --- UPDATE USER TOKEN ---
+                            OLD VALUE : %s
+                            
+                            enter TOKEN
+                            """,user.getAUTH_TOKEN()));
+                    user.setAUTH_TOKEN(scanner.nextLine().trim());
+                }
+                case "3" -> {
+                    showOptions(String.format("""
+                            --- UPDATE TWILIO PHONE NUMBER ---
+                            OLD VALUE : %s
+                            
+                            enter PHONE in valid format: [+ prefix][number]
+                            """,user.getUserPhone()));
+                    user.setUserPhone(scanner.nextLine().trim());
+                }
+                case "4" ->{
+                    showUserDetails();
+                }
+                case "B","b" -> {
+                    System.out.println("four");
+                    flag = false;
+                }
+                default -> System.out.printf("invalid key : %s%n", selected);
+            }
+        }
+    }
+
     public static void showUserDetails(){
-        System.out.println("ACCOUNT_SID : " + user.getACCOUNT_SID() + "\n" +
-                            "AUTH_TOKEN : " + user.getAUTH_TOKEN() + "\n" +
-                            "TWILIO PHONE NUMBER : " + user.getUserPhone() + "\n");
+
+        boolean flag = true;
+        while(flag){
+            showOptions(String.format("""
+                  --- USER DETAILS ---
+                    ACCOUNT_SID : %s
+                    AUTH_TOKEN : %s
+                    TWILIO PHONE NUMBER : %s
+                    press B - back to main menu"""
+                    ,user.getACCOUNT_SID(),
+                     user.getAUTH_TOKEN(),
+                     user.getUserPhone()));
+            switch (scanner.nextLine().trim()){
+                case "B","b" -> flag = false;
+            }
+        }
     }
 
     public static void getPhoneToCall(){
@@ -84,8 +157,6 @@ public class Main {
             user.setPhoneToCall(scanner.nextLine().trim());
         }
     }
-
-
 
     public static void call(String phoneNumberToCall) {
         String ACCOUNT_SID = user.getACCOUNT_SID();
