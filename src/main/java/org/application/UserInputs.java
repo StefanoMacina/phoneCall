@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
 public class UserInputs {
+
     private String ACCOUNT_SID, AUTH_TOKEN, userPhone, phoneToCall;
 
     public void setUserPhone(String userPhone) {

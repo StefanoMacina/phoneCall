@@ -65,7 +65,7 @@ public class Main {
         System.out.println("enter PHONE in valid format: [+ prefix][number] :");
         String from = scanner.nextLine().trim();
 
-        System.out.println("TWILIO DETAILS ADDEDD SUCCESSFULLY");
+        System.out.println("TWILIO DETAILS SUCCESSFULLY ADDED");
 
         user.setUserPhone(from);
         user.setACCOUNT_SID(ACCOUNT_SID);
